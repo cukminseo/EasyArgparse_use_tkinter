@@ -1,2 +1,3 @@
-# EasyArgparse_use_tkinter
-A simple and intuitive GUI for argparse parameter setting using Tkinter.
+# tkinter와 subprocess를 활용한 argparse 인수 전달
+
+## 
