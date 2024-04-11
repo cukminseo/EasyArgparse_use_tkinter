@@ -1,18 +1,25 @@
 import tkinter as tk
 from multiprocessing import Process
 import subprocess
+import time
 
 def run_script(args):
-    subprocess.run(["python", "main.py"] + args)
+    subprocess.Popen(["python", "main.py"] + args)
 
+# 외부 파일 실행
 def on_run():
-    args = []
-    for entry, arg in zip(entries, arg_names):
-        args.append(f"--{arg}_lower")
-        args.append(entry[0].get("1.0", "end-1c"))
-        args.append(f"--{arg}_upper")
-        args.append(entry[1].get("1.0", "end-1c"))
-    run_script(args)
+    worker_count = int(workers.get("1.0", "end-1c"))
+    for output_index in range(worker_count):
+        args = []
+        for entry, arg_name in zip(entries, arg_names):
+            args.append(f"--{arg_name}_lower")
+            args.append(entry[0].get("1.0", "end-1c"))
+            args.append(f"--{arg_name}_upper")
+            args.append(entry[1].get("1.0", "end-1c"))
+        args.append(f"--output_index")
+        args.append(str(output_index))
+        run_script(args)
+        time.sleep(0.01)
 
 root = tk.Tk()
 root.title("ReRAM Optimization")
@@ -42,7 +49,7 @@ upper_label.pack(side='right')
 lower_label = tk.Label(frame, text="Lower", width=10, font=("Arial", 17))
 lower_label.pack(side='right')
 
-# 각 파라밑쌍 묶기
+# 각 파라미터쌍 묶기
 for arg, (default_lower, default_upper) in zip(arg_names, default_values):
     frame = tk.Frame(root)
     frame.pack(fill='x', padx=5, pady=5)
@@ -60,18 +67,19 @@ for arg, (default_lower, default_upper) in zip(arg_names, default_values):
 
     entries.append((lower_entry, upper_entry))
 
-# 또다른 파라미터 입력
+# worker 파라미터
 worker_frame = tk.Frame(root)
 worker_frame.pack(fill='x', padx=5, pady=5)
 
-worker_label = tk.Label(worker_frame, text='worker')
+worker_label = tk.Label(worker_frame, text='workers')
 worker_label.pack(side='left')
 
 worker_entry = tk.Text(worker_frame, height=1, width=10, font=("Arial", 17))
 worker_entry.insert('1.0', str(1))
 worker_entry.pack(side='right')
+workers = worker_entry
 
-# 시작버튼
+# run button
 run_button = tk.Button(root, text='Run', command=on_run, height=2, width=20)
 run_button.pack()
 

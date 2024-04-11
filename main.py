@@ -3,11 +3,10 @@ tkinter
 """
 
 import argparse
-
 # ArgumentParser 객체 생성
 parser = argparse.ArgumentParser(description='Process some parameters.')
 
-parser.add_argument('--worker', type=int, default=1, help='use multiprocessing')
+parser.add_argument('--output_index', type=int, default=1, help='use multiprocessing')
 
 # 11개 파라미터에 대한 인자 전달
 parser.add_argument('--beta_lower', type=float, default=0.275, help='Lower bound for beta')
@@ -46,6 +45,9 @@ parser.add_argument('--t0r_upper', type=float, default=2200, help='Upper bound f
 # 인자 파싱
 args = parser.parse_args()
 
+import time
+
 # 파싱된 인자 사용
 for arg, value in vars(args).items():
     print(f'{arg}: {value}')
+    time.sleep(1)
