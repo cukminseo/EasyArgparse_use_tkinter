@@ -50,4 +50,4 @@ import time
 # 파싱된 인자 사용
 for arg, value in vars(args).items():
     print(f'{arg}: {value}')
-    time.sleep(1)
+    time.sleep(0.1)
